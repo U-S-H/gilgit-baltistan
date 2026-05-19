@@ -6,7 +6,7 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #f0f4f8; color: #2d3748; padding: 15px; min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; }
-        .container { max-width: 800px; margin: 0 auto; width: 100%; }
+        .container { max-width: 850px; margin: 0 auto; width: 100%; }
         
         .navbar { display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 25px; }
         .nav-brand { font-weight: bold; color: #1a365d; font-size: 1.1rem; }
@@ -30,12 +30,23 @@
         .input-field { width: 100%; padding: 14px; margin-bottom: 15px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 1rem; outline: none; }
         .btn-submit { width: 100%; padding: 14px; background: #3182ce; color: white; border: none; border-radius: 8px; font-size: 1.05rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(49,130,206,0.25); }
 
-        /* Course Syllabus Design */
-        .week-card { background: white; padding: 25px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-left: 6px solid #3182ce; text-align: left; }
-        .week-title { color: #1a365d; font-size: 1.4rem; font-weight: 700; margin-bottom: 15px; border-bottom: 2px solid #edf2f7; padding-bottom: 8px; }
-        .topic-sec { margin-bottom: 15px; background: #f8fafc; padding: 15px; border-radius: 8px; }
-        .topic-sec h4 { color: #2b6cb0; margin-bottom: 5px; font-size: 1.05rem; }
-        .code-box { background: #1a202c; color: #f7fafc; padding: 12px; border-radius: 6px; font-family: 'Courier New', Courier, monospace; font-size: 0.9rem; margin-top: 5px; overflow-x: auto; white-space: pre; }
+        /* Premium Syllabus & Chapters Expansion */
+        .chapter-card { background: white; padding: 25px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); border-left: 6px solid #3182ce; text-align: left; position: relative; }
+        .chapter-locked { opacity: 0.6; pointer-events: none; border-left-color: #a0aec0; }
+        .chapter-locked::before { content: "🔒 Chapter Locked (Complete Previous Test)"; position: absolute; top: 10px; right: 15px; background: #e2e8f0; color: #4a5568; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; }
+        
+        .chapter-title { color: #1a365d; font-size: 1.4rem; font-weight: 700; margin-bottom: 15px; border-bottom: 2px solid #edf2f7; padding-bottom: 8px; }
+        .topic-sec { margin-bottom: 15px; background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #edf2f7; }
+        .topic-sec h4 { color: #2b6cb0; margin-bottom: 8px; font-size: 1.1rem; }
+        .code-box { background: #1a202c; color: #f7fafc; padding: 12px; border-radius: 6px; font-family: 'Courier New', Courier, monospace; font-size: 0.9rem; margin-top: 5px; overflow-x: auto; }
+        
+        /* Interactive Quiz Styling */
+        .quiz-box { background: #ebf8ff; border: 2px solid #bee3f8; padding: 20px; border-radius: 10px; margin-top: 20px; }
+        .quiz-box h5 { color: #2b6cb0; font-size: 1.1rem; margin-bottom: 12px; }
+        .quiz-option { display: block; background: white; padding: 10px 15px; border: 1px solid #e2e8f0; border-radius: 6px; margin: 8px 0; cursor: pointer; transition: 0.2s; font-weight: 500; }
+        .quiz-option:hover { background: #e2e8f0; }
+        .quiz-option input { margin-right: 10px; }
+        .btn-quiz { background: #2b6cb0; color: white; padding: 8px 16px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
         
         /* Admin View */
         .admin-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 1000; justify-content: center; align-items: center; padding: 15px; }
@@ -63,21 +74,21 @@
 
     <header>
         <div id="secret-trigger" class="secret-logo">👨‍💻</div>
-        <h1>Web Development Complete Course</h1>
+        <h1>Web Development Complete Premium Course</h1>
         <p>Instructor & Industry Mentor: Muhammad Nazim</p>
     </header>
 
     <main>
         <div id="welcome-gate" class="card" style="display: block; text-align: center;">
             <h2>Assalam-o-Alaikum Student! 👋</h2>
-            <p style="color: #64748b; margin-top: 10px; line-height: 1.6;">Muhammad Nazim bhai ke premium learning portal par khushamdeed. A to Z practical content aur codes access karne ke liye apna Google account login karein.</p>
+            <p style="color: #64748b; margin-top: 10px; line-height: 1.6;">Muhammad Nazim bhai ke premium learning portal par khushamdeed. A to Z long detailed chapters aur interactive assessments access karne ke liye apna Google account login karein.</p>
         </div>
 
         <div id="payment-gate" class="card">
             <div id="student-status-notice"></div>
 
             <h2>🔒 Premium Content Locked</h2>
-            <p style="color: #64748b; margin-top: 5px;">Course classes unlock karne ke liye monthly subscription fee transfer kar ke verify karwayein:</p>
+            <p style="color: #64748b; margin-top: 5px;">Full course chapters unlock karne ke liye monthly subscription fee transfer kar ke verify karwayein:</p>
             
             <div class="account-wrapper">
                 <div class="account-item"><strong>📱 JazzCash Account:</strong> <span>03705519562</span></div>
@@ -95,77 +106,166 @@
         </div>
 
         <div id="course-content" class="card">
-            <div style="background: #e6fffa; padding: 12px; border-radius: 8px; color: #234e52; font-weight: bold; text-align: center; margin-bottom: 20px;">
-                🎉 Premium Access Status: Active (30 Days Remaining)
+            <div style="background: #e6fffa; padding: 12px; border-radius: 8px; color: #234e52; font-weight: bold; text-align: center; margin-bottom: 25px;">
+                🎉 Premium Course Dashboard: Active Status (30 Days Access Provisioned)
             </div>
 
-            <div class="week-card">
-                <div class="week-title">📁 Week 1: Environment Setup & HTML5 Core</div>
+            <div class="chapter-card" id="ch1">
+                <div class="chapter-title">📚 Chapter 1: HTML5 Architecture & Semantic Layouts</div>
                 
                 <div class="topic-sec">
-                    <h4>1. Introduction to Termux & Local Folder Creation:</h4>
-                    <p>Mobile par coding karne ke liye Termux open karein aur ye basic Linux commands run karein:</p>
-                    <div class="code-box"># Storage access allow karein
-termux-setup-storage
-
-# Naya folder banayein aur usme jayein
-mkdir prime-academy
-cd prime-academy</div>
+                    <h4>1. Termux Production Setup:</h4>
+                    <p>Professional directory structure create karne ke liye Termux terminal par ye command chalayein:</p>
+                    <div class="code-box">mkdir -p prime-project/{assets/css,assets/js,pages}
+cd prime-project && touch index.html assets/css/style.css</div>
                 </div>
 
                 <div class="topic-sec">
-                    <h4>2. HTML5 Master Template Layout:</h4>
-                    <p>Apne Text Editor (Acode app) mein ek file `index.html` banayein aur ye core structural boilerplate code likhein:</p>
-                    <div class="code-box">&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-&lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;title&gt;My First Project&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-    &lt;h1&gt;Welcome to Prime Solutions Academy!&lt;/h1&gt;
-    &lt;p&gt;I am learning web development under Nazim Bhai.&lt;/p&gt;
-    &lt;button&gt;Click Me&lt;/button&gt;
-&lt;/body&gt;
-&lt;/html&gt;</div>
+                    <h4>2. HTML5 Semantic Scaffolding:</h4>
+                    <p>SEO-friendly aur robust standard structural elements jo har modern layout ka hissa hote hain:</p>
+                    <div class="code-box">&lt;header&gt;
+    &lt;nav&gt;Home | About | Courses&lt;/nav&gt;
+&lt;/header&gt;
+&lt;main&gt;
+    &lt;article&gt;
+        &lt;h2&gt;Semantic Web Development&lt;/h2&gt;
+        &lt;p&gt;Learning structure under Prime Solutions.&lt;/p&gt;
+    &lt;/article&gt;
+&lt;/main&gt;
+&lt;footer&gt;&copy; 2026 Academy&lt;/footer&gt;</div>
+                </div>
+
+                <div class="quiz-box" id="quiz1-box">
+                    <h5>📝 Chapter 1 Verification Test:</h5>
+                    <p style="font-size: 0.95rem; margin-bottom: 10px; color:#4a5568;"><strong>Q. Kis tag ka use layout mein footer ya copyright details show karne ke liye kiya jata hai?</strong></p>
+                    <label class="quiz-option"><input type="radio" name="q1" value="wrong"> &lt;bottom&gt;</label>
+                    <label class="quiz-option"><input type="radio" name="q1" value="correct"> &lt;footer&gt;</label>
+                    <label class="quiz-option"><input type="radio" name="q1" value="wrong"> &lt;section&gt;</label>
+                    <button class="btn-quiz" onclick="verifyTest(1)">Submit Answer</button>
                 </div>
             </div>
 
-            <div class="week-card">
-                <div class="week-title">📁 Week 2: GitHub Cloud & Git Cloud Pipeline</div>
+            <div class="chapter-card chapter-locked" id="ch2">
+                <div class="chapter-title">📚 Chapter 2: Modern CSS3 Aesthetics & Box-Model</div>
                 
                 <div class="topic-sec">
-                    <h4>1. Git Initialization & Identification:</h4>
-                    <p>GitHub par website code push karne se pehle terminal ko apna user identity batana zaroori hai:</p>
-                    <div class="code-box"># Git repository start karein
-git init
+                    <h4>1. CSS Box-Model Concepts:</h4>
+                    <p>Margin, Border, Padding aur Content spacing ko effectively customize karna seekhein:</p>
+                    <div class="code-box">.custom-card {
+    width: 100%;
+    padding: 20px;
+    margin: 15px 0;
+    border: 2px solid #3182ce;
+    box-sizing: border-box;
+}</div>
+                </div>
 
-# Apna name aur email configure karein
+                <div class="topic-sec">
+                    <h4>2. CSS Flexbox Layout Alignment:</h4>
+                    <p>Bina float use kiye cards ya elements ko dynamic flexible row ya column mein responsive alignment dena:</p>
+                    <div class="code-box">.flex-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}</div>
+                </div>
+
+                <div class="quiz-box" id="quiz2-box">
+                    <h5>📝 Chapter 2 Verification Test:</h5>
+                    <p style="font-size: 0.95rem; margin-bottom: 10px; color:#4a5568;"><strong>Q. Flex items ko horizontally control karne ke liye kis property ka use hota hai?</strong></p>
+                    <label class="quiz-option"><input type="radio" name="q2" value="correct"> justify-content</label>
+                    <label class="quiz-option"><input type="radio" name="q2" value="wrong"> align-items</label>
+                    <label class="quiz-option"><input type="radio" name="q2" value="wrong"> display-grid</label>
+                    <button class="btn-quiz" onclick="verifyTest(2)">Submit Answer</button>
+                </div>
+            </div>
+
+            <div class="chapter-card chapter-locked" id="ch3">
+                <div class="chapter-title">📚 Chapter 3: Mobile-First Responsive Media Queries</div>
+                
+                <div class="topic-sec">
+                    <h4>1. Viewport Meta Configuration:</h4>
+                    <p>Mobile screens par elements auto-shrink hone se rokne ke liye head tag mein layout definition:</p>
+                    <div class="code-box">&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</div>
+                </div>
+
+                <div class="topic-sec">
+                    <h4>2. Media Queries Implementation:</h4>
+                    <p>Mobile, Tablet aur Desktop screens ke mutabiq alag stylings trigger karna:</p>
+                    <div class="code-box">@media (max-width: 768px) {
+    body { background-color: #ffffff; padding: 10px; }
+    .flex-container { flex-direction: column; }
+}</div>
+                </div>
+
+                <div class="quiz-box" id="quiz3-box">
+                    <h5>📝 Chapter 3 Verification Test:</h5>
+                    <p style="font-size: 0.95rem; margin-bottom: 10px; color:#4a5568;"><strong>Q. Responsive layouts build karne ke liye styling mein kis conditional rule ka use kiya jata hai?</strong></p>
+                    <label class="quiz-option"><input type="radio" name="q3" value="wrong"> @responsive</label>
+                    <label class="quiz-option"><input type="radio" name="q3" value="correct"> @media</label>
+                    <label class="quiz-option"><input type="radio" name="q3" value="wrong"> @screen</label>
+                    <button class="btn-quiz" onclick="verifyTest(3)">Submit Answer</button>
+                </div>
+            </div>
+
+            <div class="chapter-card chapter-locked" id="ch4">
+                <div class="chapter-title">📚 Chapter 4: Version Control Systems & GitHub Deployments</div>
+                
+                <div class="topic-sec">
+                    <h4>1. Git Core Initialization Flow:</h4>
+                    <p>Apne local code ka full cloud secure pipeline backup checkpoint create karne ka standard workflow:</p>
+                    <div class="code-box">git init
 git config --global user.name "Your Name"
-git config --global user.email "your-email@gmail.com"</div>
+git config --global user.email "email@example.com"</div>
                 </div>
 
                 <div class="topic-sec">
-                    <h4>2. Staging & Committing Code Changes:</h4>
-                    <p>Files ko backup snapshot create karne ka A to Z process:</p>
-                    <div class="code-box"># Tamaam files ko cloud storage queue mein add karein
-git add .
-
-# Safe checkpoint commit create karein
-git commit -m "First official deployment snapshot"</div>
-                </div>
-
-                <div class="topic-sec">
-                    <h4>3. Pushing Code to Live GitHub Remote Server:</h4>
-                    <p>Apne local code ko online remote repository se link kar ke cloud par upload karne ka final step:</p>
-                    <div class="code-box"># Main default branch setup karein
+                    <h4>2. Pushing Staged Code to Cloud Remote Server:</h4>
+                    <p>GitHub platform par production-ready lines safe upload karne ka terminal command method:</p>
+                    <div class="code-box">git add .
+git commit -m "Build course core dashboard"
 git branch -M main
-
-# Online remote cloud server repository link jorein
-git remote add origin https://github.com/your-username/repository-name.git
-
-# Code ko live server par push karein
+git remote add origin https://github.com/username/repo.git
 git push -u origin main</div>
+                </div>
+
+                <div class="quiz-box" id="quiz4-box">
+                    <h5>📝 Chapter 4 Verification Test:</h5>
+                    <p style="font-size: 0.95rem; margin-bottom: 10px; color:#4a5568;"><strong>Q. Files ko staging queue se save kar ke permanent local checkpoint banane ke liye konsi command use hoti hai?</strong></p>
+                    <label class="quiz-option"><input type="radio" name="q4" value="wrong"> git push</label>
+                    <label class="quiz-option"><input type="radio" name="q4" value="correct"> git commit</label>
+                    <label class="quiz-option"><input type="radio" name="q4" value="wrong"> git status</label>
+                    <button class="btn-quiz" onclick="verifyTest(4)">Submit Answer</button>
+                </div>
+            </div>
+
+            <div class="chapter-card chapter-locked" id="ch5">
+                <div class="chapter-title">📚 Chapter 5: JavaScript Dynamic Engine Foundations</div>
+                
+                <div class="topic-sec">
+                    <h4>1. Variables & DOM Interactivity:</h4>
+                    <p>Variables container system aur user click action event dynamically link handle karna:</p>
+                    <div class="code-box">const userName = "Student";
+document.getElementById("btn-action").addEventListener("click", () => {
+    alert("Welcome " + userName + " to JavaScript Universe!");
+});</div>
+                </div>
+
+                <div class="topic-sec">
+                    <h4>2. Functions & Conditional Control Flows:</h4>
+                    <p>Logic processing code aur calculation algorithms create karne ki structure:</p>
+                    <div class="code-box">function checkEligibility(age) {
+    if (age >= 18) {
+        return "Eligible for Advanced Web Development Program";
+    } else {
+        return "Recommended for Basics Program";
+    }
+}</div>
+                </div>
+
+                <div style="background: #ebf8ff; border: 2px solid #bee3f8; padding: 20px; border-radius: 10px; text-align: center; margin-top: 20px;">
+                    <h3>🎓 Congratulations Student!</h3>
+                    <p style="margin-top: 5px; color:#4a5568;">Aapne Prime Solutions Web Academy ka full practical course successfully complete kar liya hai! Keep learning and building awesome apps! 🔥</p>
                 </div>
             </div>
         </div>
@@ -183,7 +283,7 @@ git push -u origin main</div>
 </div>
 
 <footer>
-    <p>© 2026 Prime Solutions Inc. Course Created by Muhammad Nazim. All Rights Reserved. 🚀</p>
+    <p>© 2026 Prime Solutions Inc. Course Curriculum Structured by Muhammad Nazim. All Rights Reserved. 🚀</p>
 </footer>
 
 <script type="module">
@@ -235,25 +335,32 @@ git push -u origin main</div>
           const userData = userDoc.data();
           
           if (userData.status === "paid") {
-              // ⏱️ CHECK MONTHLY EXPIRY (30 DAYS LOGIC)
               const approvalTime = new Date(userData.approved_at).getTime();
               const currentTime = new Date().getTime();
               const daysPassed = (currentTime - approvalTime) / (1000 * 60 * 60 * 24);
 
               if (daysPassed >= 30) { 
-                  // Agar 30 din guzar gaye toh status auto block ho jaye
                   await updateDoc(doc(db, "users", currentUser.uid), { status: "expired" });
                   location.reload();
               } else {
                   document.getElementById("payment-gate").style.display = "none";
                   document.getElementById("course-content").style.display = "block";
+                  
+                  // Retain Student's Completed Progress Levels from DB if exist
+                  if(userData.chapterProgress) {
+                      for(let i=2; i<=5; i++) {
+                          if(userData.chapterProgress >= i) {
+                              document.getElementById("ch" + i).classList.remove("chapter-locked");
+                          }
+                      }
+                  }
               }
           } 
           else if (userData.status === "expired") {
               document.getElementById("payment-gate").style.display = "block";
               document.getElementById("course-content").style.display = "none";
               formElement.style.display = "block";
-              noticeDiv.innerHTML = `<div class="status-box status-expired">🚨 Premium Alert: Aapki pichli monthly fee ki validity (30 days) poori ho chuki hai. Agle mahine ka content unlock karne ke liye 1500 PKR send kar ke dobara verification bhejein!</div>`;
+              noticeDiv.innerHTML = `<div class="status-box status-expired">🚨 Premium Alert: Aapki monthly fee ki validity (30 days) poori ho chuki hai. Next month content access karne ke liye fee send kar ke re-apply karein!</div>`;
           }
           else if (userData.status === "pending") {
               document.getElementById("payment-gate").style.display = "block";
@@ -275,8 +382,6 @@ git push -u origin main</div>
 
   document.getElementById("payment-form").addEventListener("submit", (e) => {
       e.preventDefault();
-      if (!currentUser) return alert("Session expired.");
-
       const tid = document.getElementById("tid-input").value;
       const file = document.getElementById("screenshot-input").files[0];
 
@@ -301,14 +406,40 @@ git push -u origin main</div>
       }
   });
 
-  // Secret Admin Control Key Target (4-Taps)
+  // Automated Quiz Verifier Engine
+  window.verifyTest = async function(chapterNumber) {
+      const selectedOpt = document.querySelector(`input[name="q${chapterNumber}"]:checked`);
+      if(!selectedOpt) return alert("Pehle option select karein!");
+
+      if(selectedOpt.value === "correct") {
+          alert("🎉 Correct Answer! Agla Chapter Unlock ho gaya hai.");
+          const nextChapterNum = chapterNumber + 1;
+          
+          const nextChEl = document.getElementById("ch" + nextChapterNum);
+          if(nextChEl) {
+              nextChEl.classList.remove("chapter-locked");
+          }
+          
+          // Save progress synchronization inside Firestore Cloud
+          if(currentUser) {
+              try {
+                  await setDoc(doc(db, "users", currentUser.uid), {
+                      chapterProgress: nextChapterNum
+                  }, { merge: true });
+              } catch(e) { console.log(e); }
+          }
+      } else {
+          alert("❌ Galat Jawab! Code ko dobara dhyan se padhein aur phir sahi answer choose karein.");
+      }
+  }
+
+  // Admin Controls (4-Taps System)
   let clickSessionCount = 0;
   let clickTimeout;
   document.getElementById("secret-trigger").addEventListener("click", () => {
       clickSessionCount++;
       clearTimeout(clickTimeout);
       clickTimeout = setTimeout(() => { clickSessionCount = 0; }, 1200);
-
       if (clickSessionCount === 4) {
           clickSessionCount = 0;
           let accessPass = prompt("🔑 Core System Authentication Required:");
@@ -356,7 +487,8 @@ git push -u origin main</div>
                   try {
                       await updateDoc(doc(db, "users", targetedUid), { 
                           status: "paid",
-                          approved_at: new Date().toISOString() // Dynamic timestamp save ho rahi hai expiry tracking ke liye
+                          approved_at: new Date().toISOString(),
+                          chapterProgress: 1 // Default reset to Chapter 1 progress
                       });
                       alert("🎯 Student Access Activated for 30 Days!");
                       launchControlConsole(); 
