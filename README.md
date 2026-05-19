@@ -2,128 +2,237 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <title>SAQIBFITNESS | Elite Training Center</title>
+    <title>Learn Web Dev with M Nazim</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;800&display=swap');
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f4f7f6; color: #333; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
         
-        body { font-family: 'Inter', sans-serif; background: #050505; color: #fff; overflow-x: hidden; }
-        .font-hero { font-family: 'Orbitron', sans-serif; }
+        header { text-align: center; padding: 40px 20px; background: linear-gradient(135deg, #1e3c72, #2a5298); color: white; border-radius: 10px; margin-bottom: 30px; position: relative; }
+        header h1 { font-size: 2.2rem; }
         
-        .hero-gradient {
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1470&auto=format&fit=crop');
-            background-size: cover; background-position: center;
-        }
+        /* Secret Tap Target Logo Style */
+        .secret-logo { width: 60px; height: 60px; background: rgba(255,255,255,0.2); margin: 0 auto 10px auto; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.5rem; user-select: none; }
+
+        .auth-panel { text-align: right; margin-bottom: 15px; }
+        .btn-google { background: #db4437; color: white; padding: 10px 15px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
         
-        .accent-border { border-left: 4px solid #facc15; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.05); }
-        .btn-yellow { background: #facc15; color: #000; transition: all 0.3s ease; }
-        .btn-yellow:hover { background: #eab308; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(250, 204, 21, 0.3); }
+        .payment-card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; margin-bottom: 20px; display: none; }
+        .account-details { background: #eef2f7; padding: 15px; border-radius: 5px; margin: 20px 0; text-align: left; }
+        .input-field { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .btn-submit { width: 100%; padding: 12px; background: #2a5298; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
+
+        #course-content { display: none; }
+        .week-card { background: white; padding: 25px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid #2a5298; }
+
+        /* Secret Admin Modal Styles */
+        .admin-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+        .admin-content { background: white; padding: 25px; border-radius: 8px; max-width: 600px; width: 100%; max-height: 85vh; overflow-y: auto; position: relative; }
+        .close-admin { position: absolute; top: 10px; right: 15px; font-size: 1.5rem; cursor: pointer; }
+        .student-row { background: #f9f9f9; padding: 15px; margin-top: 15px; border-radius: 5px; border: 1px solid #eee; }
+        .preview-img { max-width: 100%; max-height: 150px; margin-top: 10px; border-radius: 5px; display: block; }
+        .btn-approve { background: #4caf50; color: white; padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <nav class="fixed w-full z-50 p-6 flex justify-between items-center glass">
-        <h1 class="font-hero text-xl font-black tracking-tighter text-yellow-400">SAQIB<span class="text-white">FITNESS</span></h1>
-        <div class="hidden md:flex gap-8 text-[10px] font-bold uppercase tracking-widest">
-            <a href="#" class="hover:text-yellow-400">Home</a>
-            <a href="#plans" class="hover:text-yellow-400">Memberships</a>
-            <a href="#contact" class="hover:text-yellow-400">Contact</a>
-        </div>
-        <button class="btn-yellow px-6 py-2 rounded-full text-[10px] font-black uppercase">Join Now</button>
-    </nav>
+<div class="container">
+    <div class="auth-panel">
+        <span id="user-display">🔒 Please Login</span>
+        <button id="btn-login" class="btn-google" style="margin-left: 10px;">Login with Google</button>
+    </div>
 
-    <section class="h-screen hero-gradient flex flex-col justify-center px-10">
-        <p class="text-yellow-400 font-bold uppercase tracking-[0.5em] mb-4 text-xs">Transform Your Body</p>
-        <h2 class="font-hero text-6xl md:text-8xl font-black uppercase leading-none mb-6">Unleash <br> <span class="text-yellow-400">The Beast</span></h2>
-        <p class="max-w-md text-slate-400 text-sm mb-10 leading-relaxed">Ladies & Gents Gym with state-of-the-art equipment and professional trainers. Your fitness journey starts here.</p>
-        <div class="flex gap-4">
-            <button class="btn-yellow px-10 py-4 rounded-xl font-black uppercase text-xs">Start Free Trial</button>
-            <button class="border border-white/20 px-10 py-4 rounded-xl font-black uppercase text-xs hover:bg-white/10">View Tour</button>
-        </div>
-    </section>
+    <header>
+        <div id="secret-trigger" class="secret-logo">🎓</div>
+        <h1>Web Development Course</h1>
+        <p>Mentor: Zeeshan Bhai</p>
+    </header>
 
-    <section class="py-24 px-10 grid md:grid-cols-3 gap-10">
-        <div class="glass p-10 rounded-3xl">
-            <i class="fa-solid fa-dumbbell text-4xl text-yellow-400 mb-6"></i>
-            <h4 class="font-hero text-lg mb-4 uppercase">Modern Gear</h4>
-            <p class="text-slate-500 text-sm">Top-notch machines imported for maximum muscle engagement and safety.</p>
-        </div>
-        <div class="glass p-10 rounded-3xl border-yellow-400/30">
-            <i class="fa-solid fa-venus-mars text-4xl text-yellow-400 mb-6"></i>
-            <h4 class="font-hero text-lg mb-4 uppercase">Ladies & Gents</h4>
-            <p class="text-slate-500 text-sm">Separate timings and dedicated sections for a comfortable environment.</p>
-        </div>
-        <div class="glass p-10 rounded-3xl">
-            <i class="fa-solid fa-person-running text-4xl text-yellow-400 mb-6"></i>
-            <h4 class="font-hero text-lg mb-4 uppercase">Expert Coaches</h4>
-            <p class="text-slate-500 text-sm">Certified trainers to guide you with diet plans and workout routines.</p>
-        </div>
-    </section>
-
-    <section id="plans" class="py-24 px-10 bg-[#0a0a0a]">
-        <div class="text-center mb-16">
-            <h2 class="font-hero text-4xl font-black uppercase">Choose Your <span class="text-yellow-400">Plan</span></h2>
-            <div class="h-1 w-20 bg-yellow-400 mx-auto mt-4"></div>
-        </div>
-        
-        <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <div class="glass p-10 rounded-[2.5rem] relative overflow-hidden">
-                <p class="text-[10px] font-black uppercase text-slate-500 mb-2">Monthly</p>
-                <h3 class="text-4xl font-black mb-6">₨ 2,500 <span class="text-sm font-normal opacity-50">/mo</span></h3>
-                <ul class="space-y-4 text-sm mb-10">
-                    <li class="flex items-center gap-3"><i class="fa-solid fa-check text-yellow-400"></i> Full Gym Access</li>
-                    <li class="flex items-center gap-3"><i class="fa-solid fa-check text-yellow-400"></i> Locker Room</li>
-                    <li class="flex items-center gap-3 opacity-30"><i class="fa-solid fa-xmark"></i> Personal Trainer</li>
-                </ul>
-                <button class="w-full py-4 border border-white/10 rounded-2xl font-black uppercase text-[10px] hover:bg-white hover:text-black transition-all">Select Plan</button>
+    <main>
+        <div id="payment-gate" class="payment-card">
+            <h2>🔒 Premium Course Content is Locked</h2>
+            <div class="account-details">
+                <p><strong>📱 JazzCash:</strong> 03705519562 (Zeeshan)</p>
+                <p><strong>📱 EasyPaisa:</strong> 03379827882 (Zeeshan)</p>
             </div>
+            <form id="payment-form">
+                <input type="text" id="tid-input" placeholder="Enter 11-digit TID Number" required class="input-field">
+                <label style="font-weight: bold; display: block; margin-bottom: 5px; text-align: left;">Upload Receipt Screenshot:</label>
+                <input type="file" id="screenshot-input" accept="image/*" required class="input-field">
+                <button type="submit" class="btn-submit">Submit Payment Proof</button>
+            </form>
+        </div>
 
-            <div class="glass p-10 rounded-[2.5rem] border-yellow-400/50 relative overflow-hidden">
-                <div class="absolute top-0 right-0 bg-yellow-400 text-black px-6 py-2 text-[10px] font-black uppercase">Best Value</div>
-                <p class="text-[10px] font-black uppercase text-yellow-400 mb-2">Quarterly (3 Months)</p>
-                <h3 class="text-4xl font-black mb-6">₨ 6,000 <span class="text-sm font-normal opacity-50">/term</span></h3>
-                <ul class="space-y-4 text-sm mb-10">
-                    <li class="flex items-center gap-3"><i class="fa-solid fa-check text-yellow-400"></i> Full Gym Access</li>
-                    <li class="flex items-center gap-3"><i class="fa-solid fa-check text-yellow-400"></i> Diet Consultation</li>
-                    <li class="flex items-center gap-3"><i class="fa-solid fa-check text-yellow-400"></i> Free WiFi</li>
-                </ul>
-                <button class="w-full btn-yellow py-4 rounded-2xl font-black uppercase text-[10px]">Select Plan</button>
+        <div id="course-content">
+            <div class="week-card">
+                <h3>Week 1: HTML Basics (Unlocked 🎉)</h3>
+                <p style="margin-top:10px;">Welcome! Start learning HTML with Termux and Acode editor...</p>
             </div>
         </div>
-    </section>
+    </main>
+</div>
 
-    <section class="py-24 px-10 text-center">
-        <div class="glass max-w-xl mx-auto p-10 rounded-[3rem]">
-            <h3 class="font-hero text-xl mb-6 uppercase">Body Mass Index <span class="text-yellow-400">Calculator</span></h3>
-            <div class="flex gap-4 mb-6">
-                <input id="weight" type="number" placeholder="Weight (kg)" class="w-1/2 bg-black/40 border border-white/10 p-4 rounded-2xl outline-none">
-                <input id="height" type="number" placeholder="Height (cm)" class="w-1/2 bg-black/40 border border-white/10 p-4 rounded-2xl outline-none">
-            </div>
-            <button onclick="calculateBMI()" class="btn-yellow w-full py-4 rounded-2xl font-black uppercase text-xs mb-4">Calculate My BMI</button>
-            <p id="bmi-result" class="text-sm font-bold text-yellow-400 uppercase tracking-widest"></p>
+<div id="admin-panel" class="admin-modal">
+    <div class="admin-content">
+        <span id="close-modal" class="close-admin">&times;</span>
+        <h2 style="color: #1e3c72; border-bottom: 2px solid #1e3c72; padding-bottom: 10px;">😎 Zeeshan Control Panel</h2>
+        <div id="student-requests-list" style="margin-top: 15px;">
+            <p style="color: #666;">No pending verification requests found.</p>
         </div>
-    </section>
+    </div>
+</div>
 
-    <footer id="contact" class="py-10 text-center border-t border-white/5 opacity-50 text-[10px] font-bold uppercase tracking-widest">
-        <p>&copy; 2026 SAQIBFITNESS. Developed by High-End Solutions.</p>
-    </footer>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+  import { getFirestore, doc, setDoc, getDoc, collection, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+  import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
-    <script>
-        function calculateBMI() {
-            const w = document.getElementById('weight').value;
-            const h = document.getElementById('height').value / 100;
-            if(w > 0 && h > 0) {
-                const bmi = (w / (h * h)).toFixed(1);
-                let msg = "";
-                if(bmi < 18.5) msg = "Underweight";
-                else if(bmi < 25) msg = "Normal Weight";
-                else if(bmi < 30) msg = "Overweight";
-                else msg = "Obese";
-                document.getElementById('bmi-result').innerText = `Your BMI: ${bmi} (${msg})`;
-            }
-        }
-    </script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCsgXPW-h2NzAHMrDBIL_HjlU8wSpcgzvI",
+    authDomain: "course-3cc77.firebaseapp.com",
+    databaseURL: "https://course-3cc77-default-rtdb.firebaseio.com",
+    projectId: "course-3cc77",
+    storageBucket: "course-3cc77.firebasestorage.app",
+    messagingSenderId: "136140432667",
+    appId: "1:136140432667:web:9f543dc3db8683944ddfbe"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+  let currentUser = null;
+
+  // Login
+  document.getElementById("btn-login").addEventListener("click", () => {
+      signInWithPopup(auth, provider).catch(err => alert("Error: " + err.message));
+  });
+
+  // Auth Monitor
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      currentUser = user;
+      document.getElementById("user-display").innerText = "👤 " + user.displayName;
+      document.getElementById("btn-login").style.display = "none";
+      checkUserStatus();
+    }
+  });
+
+  async function checkUserStatus() {
+      const userDoc = await getDoc(doc(db, "users", currentUser.uid));
+      if (userDoc.exists() && userDoc.data().status === "paid") {
+          document.getElementById("payment-gate").style.display = "none";
+          document.getElementById("course-content").style.display = "block";
+      } else {
+          document.getElementById("payment-gate").style.display = "block";
+          document.getElementById("course-content").style.display = "none";
+      }
+  }
+
+  // Payment Submit (Base64 conversion)
+  document.getElementById("payment-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (!currentUser) return alert("Please login first!");
+
+      const tid = document.getElementById("tid-input").value;
+      const file = document.getElementById("screenshot-input").files[0];
+
+      if (file) {
+          const reader = new FileReader();
+          reader.onloadend = async () => {
+              try {
+                  await setDoc(doc(db, "users", currentUser.uid), {
+                      uid: currentUser.uid,
+                      name: currentUser.displayName,
+                      email: currentUser.email,
+                      status: "unpaid",
+                      tid: tid,
+                      screenshot_base64: reader.result,
+                      submitted_at: new Date().toISOString()
+                  }, { merge: true });
+                  alert("🎉 Details submitted! Waiting for Zeeshan Bhai's approval.");
+                  document.getElementById("payment-form").reset();
+              } catch (err) { alert("Error: " + err.message); }
+          };
+          reader.readAsDataURL(file);
+      }
+  });
+
+  // ================= SECRET TAP LOGIC =================
+  let tapCount = 0;
+  let tapTimer;
+
+  document.getElementById("secret-trigger").addEventListener("click", () => {
+      tapCount++;
+      clearTimeout(tapTimer);
+      
+      // Agar 1 second tak dubara click nahi kiya toh reset ho jaye
+      tapTimer = setTimeout(() => { tapCount = 0; }, 1200);
+
+      if (tapCount === 4) {
+          tapCount = 0;
+          let secretKey = prompt("🔒 Enter Secret Admin Key:");
+          if (secretKey === "nor804") {
+              openAdminPanel();
+          } else if (secretKey !== null) {
+              alert("❌ Wrong Secret Key!");
+          }
+      }
+  });
+
+  // Open Admin Panel & Fetch Data
+  async function openAdminPanel() {
+      document.getElementById("admin-panel").style.display = "flex";
+      const listDiv = document.getElementById("student-requests-list");
+      listDiv.innerHTML = "<p>Loading pending requests...</p>";
+
+      try {
+          const querySnapshot = await getDocs(collection(db, "users"));
+          listDiv.innerHTML = "";
+          let hasRequests = false;
+
+          querySnapshot.forEach((docSnap) => {
+              const data = docSnap.data();
+              // Sirf unko dikhao jo unpaid hain aur details bheji hain
+              if (data.status === "unpaid" && data.tid) {
+                  hasRequests = true;
+                  const row = document.createElement("div");
+                  row.className = "student-row";
+                  row.innerHTML = `
+                      <p><strong>Name:</strong> ${data.name || 'Student'}</p>
+                      <p><strong>Email:</strong> ${data.email}</p>
+                      <p><strong>TID:</strong> <span style="color:red; font-weight:bold;">${data.tid}</span></p>
+                      <img src="${data.screenshot_base64}" class="preview-img" alt="Receipt"/>
+                      <button class="btn-approve" data-id="${data.uid}">Approve & Unlock</button>
+                  `;
+                  listDiv.appendChild(row);
+              }
+          });
+
+          if (!hasRequests) {
+              listDiv.innerHTML = "<p style='color:green; font-weight:bold;'>🎉 No pending unpaid requests!</p>";
+          }
+
+          // Approve Buttons Click Event
+          document.querySelectorAll(".btn-approve").forEach(button => {
+              button.addEventListener("click", async (e) => {
+                  const studentUid = e.target.getAttribute("data-id");
+                  try {
+                      await updateDoc(doc(db, "users", studentUid), { status: "paid" });
+                      alert("👍 Approved successfully! Course unlocked for this student.");
+                      openAdminPanel(); // Refresh list
+                      if(currentUser && currentUser.uid === studentUid) checkUserStatus();
+                  } catch (err) { alert("Error approving: " + err.message); }
+              });
+          });
+
+      } catch (err) { listDiv.innerHTML = "<p>Error loading data: " + err.message + "</p>"; }
+  }
+
+  // Close Admin Modal
+  document.getElementById("close-modal").addEventListener("click", () => {
+      document.getElementById("admin-panel").style.display = "none";
+  });
+</script>
 </body>
 </html>
