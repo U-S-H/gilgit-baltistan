@@ -28,6 +28,11 @@
         .card { background: white; padding: 30px 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); margin-bottom: 25px; display: none; }
         .card h2 { color: #1a365d; font-size: 1.4rem; margin-bottom: 10px; }
         
+        /* Dynamic Status Notice Boxes */
+        .status-box { padding: 15px; border-radius: 8px; font-weight: 600; margin-bottom: 20px; text-align: center; font-size: 1rem; }
+        .status-pending { background: #feebc8; color: #c05621; border: 1px solid #fbd38d; }
+        .status-rejected { background: #fed7d7; color: #9b2c2c; border: 1px solid #feb2b2; text-align: left; }
+
         /* Payment Gateway Styling */
         .account-wrapper { background: #f7fafc; border: 1px dashed #cbd5e0; padding: 20px; border-radius: 10px; margin: 20px 0; text-align: left; }
         .account-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #edf2f7; }
@@ -50,11 +55,11 @@
         .admin-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 1000; justify-content: center; align-items: center; padding: 15px; }
         .admin-content { background: white; padding: 30px; border-radius: 15px; max-width: 600px; width: 100%; max-height: 85vh; overflow-y: auto; position: relative; box-shadow: 0 20px 25px rgba(0,0,0,0.15); }
         .close-admin { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; cursor: pointer; color: #a0aec0; }
-        .close-admin:hover { color: #4a5568; }
         .student-row { background: #f7fafc; padding: 18px; margin-top: 15px; border-radius: 10px; border: 1px solid #e2e8f0; }
         .preview-img { max-width: 100%; max-height: 180px; margin-top: 12px; border-radius: 8px; border: 2px solid #e2e8f0; object-fit: contain; background: white; }
-        .btn-approve { background: #38a169; color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; margin-top: 12px; font-weight: bold; width: 100%; font-size: 0.95rem; }
-        .btn-approve:hover { background: #2f855a; }
+        .btn-action-panel { display: flex; gap: 10px; margin-top: 12px; }
+        .btn-approve { background: #38a169; color: white; padding: 10px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; flex: 1; }
+        .btn-reject { background: #e53e3e; color: white; padding: 10px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; flex: 1; }
 
         footer { text-align: center; padding: 25px 0; color: #718096; font-size: 0.9rem; border-top: 1px solid #e2e8f0; margin-top: 40px; }
     </style>
@@ -79,12 +84,14 @@
     <main>
         <div id="welcome-gate" class="card" style="display: block; text-align: center;">
             <h2>Assalam-o-Alaikum Student! 👋</h2>
-            <p style="color: #64748b; margin-top: 10px; line-height: 1.6;">Prime Solutions ke official premium portal par khushamdeed. Apna personalized web development course dashboard access karne ke liye upar diye gaye button se Google Login karein.</p>
+            <p style="color: #64748b; margin-top: 10px; line-height: 1.6;">Prime Solutions ke official premium portal par khushamdeed. Dashboard access karne ke liye upar diye gaye button se Google Login karein.</p>
         </div>
 
         <div id="payment-gate" class="card">
+            <div id="student-status-notice"></div>
+
             <h2>🔒 Premium Content Locked</h2>
-            <p style="color: #64748b; margin-top: 5px;">Aapka account is waqt unpaid status par hai. Monthly subscription fee verify karwane ke liye details send karein:</p>
+            <p style="color: #64748b; margin-top: 5px;">Course content unlock karne ke liye fee send kar ke details submit karein:</p>
             
             <div class="account-wrapper">
                 <div class="account-item"><strong>📱 JazzCash Account:</strong> <span>03705519562</span></div>
@@ -97,11 +104,11 @@
                 <input type="text" id="tid-input" placeholder="Enter 11-Digit Transaction ID (TID)" required class="input-field">
                 <label style="font-weight: 600; display: block; margin-bottom: 8px; text-align: left; font-size: 0.9rem; color: #4a5568;">Upload Payment Receipt Screenshot:</label>
                 <input type="file" id="screenshot-input" accept="image/*" required class="input-field" style="padding: 10px;">
-                <button type="submit" class="btn-submit">Submit Verification Request</button>
+                <button type="submit" id="btn-submit-payment" class="btn-submit">Submit Verification Request</button>
             </form>
         </div>
 
-        <div id="course-content">
+        <div id="course-content" class="card">
             <div class="week-card">
                 <div class="week-header">
                     <span class="week-title">Week 1: Foundations of HTML5</span>
@@ -173,18 +180,49 @@
 
   async function syncUserAuthorization() {
       const userDoc = await getDoc(doc(db, "users", currentUser.uid));
-      if (userDoc.exists() && userDoc.data().status === "paid") {
-          document.getElementById("payment-gate").style.display = "none";
-          document.getElementById("course-content").style.display = "block";
+      const noticeDiv = document.getElementById("student-status-notice");
+      const formElement = document.getElementById("payment-form");
+      noticeDiv.innerHTML = ""; 
+
+      if (userDoc.exists()) {
+          const userData = userDoc.data();
+          
+          if (userData.status === "paid") {
+              document.getElementById("payment-gate").style.display = "none";
+              document.getElementById("course-content").style.display = "block";
+          } 
+          else if (userData.status === "pending") {
+              document.getElementById("payment-gate").style.display = "block";
+              document.getElementById("course-content").style.display = "none";
+              formElement.style.display = "none"; // Hide input fields if pending
+              noticeDiv.innerHTML = `<div class="status-box status-pending">⏳ Aapki payment check ho rahi hai. Nazim bhai jald hi verify kar ke course unlock kar denge!</div>`;
+          } 
+          else if (userData.status === "rejected") {
+              document.getElementById("payment-gate").style.display = "block";
+              document.getElementById("course-content").style.display = "none";
+              formElement.style.display = "block"; // Show form again to let them retry
+              noticeDiv.innerHTML = `
+                  <div class="status-box status-rejected">
+                      ❌ <strong>Aapki Payment Request Reject ho gayi hai!</strong><br>
+                      <span style="font-weight:normal;">Reason: ${userData.rejection_reason || 'Invalid TID or Screenshot.'}</span><br>
+                      <span style="font-size:0.9rem; opacity:0.9;">Khas taur par sahi screenshot aur real TID daal kar dobara apply karein.</span>
+                  </div>`;
+          }
+          else { // unpaid status
+              document.getElementById("payment-gate").style.display = "block";
+              document.getElementById("course-content").style.display = "none";
+              formElement.style.display = "block";
+          }
       } else {
           document.getElementById("payment-gate").style.display = "block";
           document.getElementById("course-content").style.display = "none";
+          formElement.style.display = "block";
       }
   }
 
   document.getElementById("payment-form").addEventListener("submit", (e) => {
       e.preventDefault();
-      if (!currentUser) return alert("Session expired. Please log in again.");
+      if (!currentUser) return alert("Session expired.");
 
       const tid = document.getElementById("tid-input").value;
       const file = document.getElementById("screenshot-input").files[0];
@@ -197,14 +235,14 @@
                       uid: currentUser.uid,
                       name: currentUser.displayName,
                       email: currentUser.email,
-                      status: "unpaid",
+                      status: "pending", // Status update to pending
                       tid: tid,
                       screenshot_base64: reader.result,
                       submitted_at: new Date().toISOString()
                   }, { merge: true });
-                  alert("🎉 Verification package transmitted to backend! System will auto-unlock once Muhammad Nazim approves.");
-                  document.getElementById("payment-form").reset();
-              } catch (err) { alert("Database Pipeline Interrupted: " + err.message); }
+                  alert("Transmitted successfully!");
+                  syncUserAuthorization();
+              } catch (err) { alert("Error: " + err.message); }
           };
           reader.readAsDataURL(file);
       }
@@ -242,16 +280,19 @@
 
           cloudSnapshot.forEach((docSnap) => {
               const profile = docSnap.data();
-              if (profile.status === "unpaid" && profile.tid) {
+              if (profile.status === "pending") { // Only pending show in admin control
                   requestsPending = true;
                   const requestItem = document.createElement("div");
                   requestItem.className = "student-row";
                   requestItem.innerHTML = `
                       <p><strong>Student:</strong> ${profile.name || 'Anonymous User'}</p>
                       <p><strong>Email:</strong> ${profile.email}</p>
-                      <p><strong>TID Match:</strong> <span style="color:#e53e3e; font-weight:700;">${profile.tid}</span></p>
-                      <img src="${profile.screenshot_base64}" class="preview-img" alt="Receipt Preview"/>
-                      <button class="btn-approve" data-uid="${profile.uid}">Approve & Provison Access</button>
+                      <p><strong>TID:</strong> <span style="color:#e53e3e; font-weight:700;">${profile.tid}</span></p>
+                      <img src="${profile.screenshot_base64}" class="preview-img" alt="Receipt"/>
+                      <div class="btn-action-panel">
+                          <button class="btn-approve" data-uid="${profile.uid}">Approve & Unlock</button>
+                          <button class="btn-reject" data-uid="${profile.uid}">Reject</button>
+                      </div>
                   `;
                   requestsContainer.appendChild(requestItem);
               }
@@ -261,12 +302,33 @@
               requestsContainer.innerHTML = "<p style='color:#38a169; font-weight:700; text-align:center; padding:15px;'>🎉 No active pending requests found in Firestore.</p>";
           }
 
+          // Approve Logic
           document.querySelectorAll(".btn-approve").forEach(actionBtn => {
               actionBtn.addEventListener("click", async (event) => {
                   const targetedUid = event.target.getAttribute("data-uid");
                   try {
                       await updateDoc(doc(db, "users", targetedUid), { status: "paid" });
-                      alert("🎯 System Status Updated to PAID. Access provisioned.");
+                      alert("🎯 Status Updated to PAID.");
+                      launchControlConsole(); 
+                      if(currentUser && currentUser.uid === targetedUid) syncUserAuthorization();
+                  } catch (err) { alert("Execution Failed: " + err.message); }
+              });
+          });
+
+          // Reject Logic
+          document.querySelectorAll(".btn-reject").forEach(actionBtn => {
+              actionBtn.addEventListener("click", async (event) => {
+                  const targetedUid = event.target.getAttribute("data-uid");
+                  let reason = prompt("Enter Rejection Reason (e.g., Fake Screenshot / Expired TID):");
+                  if (reason === null) return; // cancel click
+                  if (reason.trim() === "") reason = "Invalid or blurry verification details.";
+                  
+                  try {
+                      await updateDoc(doc(db, "users", targetedUid), { 
+                          status: "rejected",
+                          rejection_reason: reason
+                      });
+                      alert("❌ Status Updated to REJECTED.");
                       launchControlConsole(); 
                       if(currentUser && currentUser.uid === targetedUid) syncUserAuthorization();
                   } catch (err) { alert("Execution Failed: " + err.message); }
