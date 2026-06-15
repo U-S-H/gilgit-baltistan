@@ -1,8 +1,8 @@
-<html lang="ur">
+<html lang="ur" dir="rtl" id="appHtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Discover GB - Pro Tourist Hub</title>
+    <title>Discover GB - Ultra Modern Hub</title>
     
     <!-- Firebase Compatibility SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -10,487 +10,389 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
     
     <style>
-        /* Base & Reset Styles */
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --accent-color: #38bdf8;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+        }
+
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, -apple-system, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: #f1f5f9;
-            color: #1e293b;
-            padding-bottom: 80px; 
-            direction: rtl; 
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            padding-bottom: 90px;
+            min-height: 100vh;
         }
 
-        /* Professional Full Screen Loader */
-        .app-loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #ffffff;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
-            color: #1e3a8a;
-            font-size: 1.2rem;
-            transition: opacity 0.5s ease, visibility 0.5s;
-        }
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #1e3a8a;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin-bottom: 15px;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* App Top Header */
-        .app-header {
-            background-color: #1e3a8a;
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: bold;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        /* Hero App Banner */
-        .app-banner {
-            background: linear-gradient(rgba(30, 58, 138, 0.6), rgba(30, 58, 138, 0.8)), url('https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=600') no-repeat center center/cover;
-            height: 180px;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
             padding: 20px;
-            margin-bottom: 15px;
+            margin: 15px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
         }
 
-        .app-banner h2 { font-size: 1.6rem; margin-bottom: 5px; }
-        .app-banner p { font-size: 0.85rem; opacity: 0.9; }
-
-        .app-container { padding: 0 15px; }
-
-        /* Google Login Component */
-        .login-card {
-            background: white;
-            border-radius: 12px;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            margin-bottom: 20px;
-        }
-        .login-profile { display: flex; align-items: center; gap: 10px; justify-content: center; }
-        .login-profile img { width: 40px; height: 40px; border-radius: 50%; }
-        .google-btn {
-            background-color: #fff;
-            color: #757575;
-            border: 1px solid #ddd;
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        /* Form Components */
-        .app-card-form {
-            background: white;
-            border-radius: 12px;
-            padding: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            margin-bottom: 25px;
-        }
-        .form-group { margin-bottom: 12px; }
-        .form-group label { font-size: 0.9rem; font-weight: bold; color: #475569; display: block; margin-bottom: 5px; }
-        select, input, textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            outline: none;
-            font-size: 0.95rem;
-            background: #f8fafc;
-        }
-        .app-btn {
-            background-color: #1e3a8a;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 1rem;
-            width: 100%;
-            cursor: pointer;
-        }
-
-        /* Section Title */
-        .section-title {
-            font-size: 1.1rem;
-            color: #0f172a;
-            margin-bottom: 12px;
-            border-right: 4px solid #2563eb;
-            padding-right: 8px;
-        }
-
-        /* Destinations Grid */
-        .card-stack { display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px; }
-        .app-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-        .app-card img { width: 100%; height: 150px; object-fit: cover; }
-        .app-card-content { padding: 12px; }
-        .app-card-content h4 { color: #1e3a8a; font-size: 1rem; margin-bottom: 4px; }
-        .app-card-content p { font-size: 0.85rem; color: #64748b; }
-
-        /* Inline Page/Content Loader (Privacy Policy & Company Details) */
-        .sub-page-section {
-            background: white;
-            border-radius: 12px;
-            padding: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            margin-bottom: 25px;
-        }
-        .tab-btn-container { display: flex; gap: 10px; margin-bottom: 12px; }
-        .tab-btn {
-            flex: 1;
-            padding: 8px;
-            background: #e2e8f0;
-            border: none;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            color: #475569;
-            cursor: pointer;
-        }
-        .tab-btn.active { background: #1e3a8a; color: white; }
-        .dynamic-content-area {
-            min-height: 60px;
-            font-size: 0.9rem;
-            color: #475569;
-            position: relative;
-        }
-        .inline-loader {
-            display: none;
-            text-align: center;
-            color: #2563eb;
-            font-weight: bold;
-            padding: 10px 0;
-        }
-
-        /* Bottom Navigation Dock */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            height: 65px;
-            background: white;
+        .app-header {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 15px 20px;
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
             align-items: center;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
-            z-index: 2000;
+            position: sticky; top: 0; z-index: 1000;
         }
-        .nav-tab {
-            display: flex; flex-direction: column; align-items: center;
-            color: #64748b; text-decoration: none; font-size: 0.75rem; font-weight: bold; width: 20%;
+
+        /* Logo Button style (Secret Trigger) */
+        .brand-title { font-weight: 800; font-size: 1.2rem; color: #fff; cursor: pointer; user-select: none; }
+        
+        .lang-btn {
+            background: var(--accent-color); color: #0f172a;
+            border: none; padding: 8px 16px; border-radius: 30px; font-weight: bold;
+            cursor: pointer; font-size: 0.85rem; box-shadow: 0 4px 14px rgba(56, 189, 248, 0.4);
         }
-        .nav-tab.active { color: #2563eb; }
-        .nav-tab .tab-icon { font-size: 1.3rem; margin-bottom: 2px; }
-        .whatsapp-float-btn {
-            background-color: #25D366; color: white; width: 48px; height: 48px; border-radius: 50%;
-            display: flex; justify-content: center; align-items: center; font-size: 1.4rem;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15); text-decoration: none;
+
+        .hero-section { text-align: center; padding: 30px 15px; }
+        .hero-section h1 { font-size: 1.8rem; margin-bottom: 8px; color: #fff; }
+        .hero-section p { color: var(--text-sub); font-size: 0.9rem; }
+
+        label { font-size: 0.85rem; color: var(--text-sub); display: block; margin-bottom: 6px; }
+        select, input, textarea {
+            width: 100%; padding: 14px; margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border);
+            border-radius: 12px; color: #fff; outline: none; font-size: 0.95rem;
+        }
+        select option { background: #0f172a; color: #fff; }
+
+        .action-btn {
+            background: linear-gradient(90deg, #2563eb, #38bdf8);
+            color: white; border: none; padding: 14px; border-radius: 12px;
+            font-weight: bold; font-size: 1rem; width: 100%; cursor: pointer;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .dest-card {
+            border-radius: 20px; overflow: hidden; background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border); margin-bottom: 15px;
+        }
+        .dest-card img { width: 100%; height: 180px; object-fit: cover; }
+        .dest-info { padding: 15px; }
+        .dest-info h3 { color: var(--accent-color); font-size: 1.1rem; margin-bottom: 5px; }
+        .dest-info p { color: var(--text-sub); font-size: 0.85rem; }
+
+        .review-item {
+            background: rgba(255,255,255,0.03); padding: 12px;
+            border-radius: 12px; margin-top: 10px; border-right: 3px solid var(--accent-color);
+        }
+
+        /* Admin Secret View Modal Styling */
+        .admin-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.95); z-index: 9999; overflow-y: auto; padding: 20px;
+        }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--glass-border); padding-bottom: 10px; }
+        .data-row {
+            background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px;
+            margin-bottom: 12px; border-left: 4px solid var(--accent-color); font-size: 0.9rem;
+        }
+
+        .bottom-dock {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(15px);
+            border-top: 1px solid var(--glass-border); height: 70px;
+            display: flex; justify-content: space-around; align-items: center; z-index: 2000;
+        }
+        .dock-tab { display: flex; flex-direction: column; align-items: center; color: var(--text-sub); text-decoration: none; font-size: 0.75rem; }
+        .dock-tab.active { color: var(--accent-color); }
+        .dock-icon { font-size: 1.4rem; margin-bottom: 2px; }
+
+        .float-wa {
+            background: #25D366; color: white; width: 50px; height: 50px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; font-size: 1.5rem;
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4); text-decoration: none;
         }
     </style>
 </head>
 <body>
 
-    <!-- Professional App Loader Component -->
-    <div class="app-loader" id="mainLoader">
-        <div class="spinner"></div>
-        <span>سسٹم لوڈ ہو رہا ہے...</span>
+    <!-- Header -->
+    <div class="app-header">
+        <!-- 4 Tap Custom Secret Trigger Embedded in Logo -->
+        <div class="brand-title" id="navTitle" onclick="triggerSecretAdmin()">🏔️ Discover GB</div>
+        <button class="lang-btn" onclick="toggleLanguage()" id="langBtn">English</button>
     </div>
 
-    <!-- App Header -->
-    <div class="app-header">🏔️ Discover Gilgit-Baltistan</div>
-
-    <!-- App Banner -->
-    <div class="app-banner" id="home-view">
-        <h2>جی بی ٹورسٹ پورٹل</h2>
-        <p>موبائل فرینڈلی سمارٹ ٹریول ڈائریکٹری</p>
+    <!-- Hero -->
+    <div class="hero-section">
+        <h1 id="heroTitle">جی بی ٹورسٹ پورٹل</h1>
+        <p id="heroSub">خوبصورت وادیوں کی ماڈرن ڈیجیٹل گائیڈ</p>
     </div>
 
     <div class="app-container">
-
-        <!-- 1. Google Auth Component -->
-        <div class="login-card">
-            <div id="authContent">
-                <p style="font-size: 0.9rem; margin-bottom: 10px; color: #64748b;">بہتر تجربے اور لائیو فیڈ بیک کے لیے لاگ ان کریں:</p>
-                <button class="google-btn" onclick="handleGoogleLogin()">
-                    🌐 Google کے ساتھ سائن ان کریں
-                </button>
-            </div>
+        <!-- Google Login -->
+        <div class="glass-card" style="text-align: center;">
+            <p id="loginTxt" style="font-size: 0.9rem; margin-bottom: 12px; color: var(--text-sub);">گوگل کے ساتھ ایک کلک میں سائن ان کریں:</p>
+            <button class="action-btn" style="background: #fff; color: #111;" onclick="googleAuth()" id="googleBtn">🌐 Google Sign In</button>
         </div>
 
-        <!-- 2. Smart Free Quote Selector Form (No Direct Prices) -->
-        <h3 class="section-title" id="quote-view">مفت ٹور کوٹیشن حاصل کریں</h3>
-        <div class="app-card-form">
-            <div class="form-group">
-                <label>آپ گلگت بلتستان کے کس شہر جانا چاہتے ہیں؟</label>
-                <select id="tourCity">
-                    <option value="">-- شہر منتخب کریں --</option>
-                    <option value="استور">استور (Astore)</option>
-                    <option value="گلگت">گلگت (Gilgit)</option>
-                    <option value="سکردو">سکردو (Skardu)</option>
-                    <option value="ہنزہ">ہنزہ (Hunza)</option>
-                    <option value="غذر">غذر (Ghizer)</option>
-                    <option value="دیامر">دیامر (Diamer)</option>
-                    <option value="شگر">شگر (Shigar)</option>
-                    <option value="کھرمنگ">کھرمنگ (Kharmang)</option>
-                    <option value="گانچھے">گانچھے (Ghanche)</option>
-                    <option value="نگر">نگر (Nagar)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>گاڑی / سروس کی نوعیت</label>
-                <select id="vehicleType">
-                    <option value="Prado / Jeep 4x4">Prado / Jeep 4x4</option>
-                    <option value="Hiace Grand Cabin">Hiace Grand Cabin</option>
-                    <option value="صرف لوکل ٹور گائیڈ">صرف لوکل ٹور گائیڈ</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>اضافی تفصیلات (دنوں کی تعداد وغیرہ)</label>
-                <textarea id="quoteNotes" rows="2" placeholder="مثال کے طور پر: 5 دن کا ٹور پلان ہے..."></textarea>
-            </div>
-            <button class="app-btn" onclick="submitQuoteRequest()">کوٹیشن کی درخواست بھیجیں</button>
-        </div>
-
-        <!-- Destinations Display -->
-        <h3 class="section-title">مشہور سیاحتی مقامات</h3>
-        <div class="card-stack">
-            <div class="app-card">
-                <img src="https://images.unsplash.com/photo-1627483262769-04d0a1401487?q=80&w=600" alt="Hunza">
-                <div class="app-card-content">
-                    <h4>ہنزہ اور عطا آباد (Hunza Valley)</h4>
-                    <p>خوبصورت جھیلیں اور تاریخی قلعے دیکھنے کے لیے بہترین انتخاب۔</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- 3. Professional In-App Content Loader (Company Info & Privacy) -->
-        <h3 class="section-title" id="info-view">کمپنی اور قانونی معلومات</h3>
-        <div class="sub-page-section">
-            <div class="tab-btn-container">
-                <button class="tab-btn active" id="btnCompany" onclick="switchTab('company')">کمپنی کی تفصیلات</button>
-                <button class="tab-btn" id="btnPrivacy" onclick="switchTab('privacy')">پرائیویسی پالیسی</button>
-            </div>
-            <div class="dynamic-content-area">
-                <div class="inline-loader" id="inlineLoader">🔄 معلومات لوڈ ہو رہی ہیں...</div>
-                <div id="tabContentBody">
-                    Discover Gilgit-Baltistan ایک رجسٹرڈ مقامی ٹریول گائیڈ نیٹ ورک ہے جو سیاحوں کو محفوظ اور سستی سفری سہولیات فراہم کرتا ہے۔
-                </div>
-            </div>
-        </div>
-
-        <!-- Live Firebase Reviews Component -->
-        <h3 class="section-title" id="reviews-view">سیاحوں کے لائیو ریویوز</h3>
-        <div class="app-card-form">
-            <input type="text" id="fbUserName" placeholder="آپ کا نام (یا لاگ ان کریں)" style="margin-bottom:8px;">
-            <textarea id="fbUserMsg" rows="2" placeholder="اپنا سفری تجربہ شیئر کریں..." style="margin-bottom:10px;"></textarea>
-            <button class="app-btn" style="background:#10b981;" onclick="sendFirebaseReview()">ریویو پوسٹ کریں</button>
+        <!-- Quote Request Form -->
+        <div class="glass-card" id="quote-section">
+            <h2 id="quoteTitle" style="font-size: 1.2rem; margin-bottom: 15px; color: var(--accent-color);">مفت ٹور پلان حاصل کریں</h2>
             
-            <div id="liveReviewsBox" style="margin-top:15px; max-height:200px; overflow-y:auto;">
-                <p style="text-align:center; color:#64748b; font-size:0.85rem;" id="dbStatus">لوڈنگ رائیڈز...</p>
+            <label id="lblCity">شہر کا انتخاب کریں:</label>
+            <select id="destCity">
+                <option value="استور">استور (Astore)</option>
+                <option value="گلگت">گلگت (Gilgit)</option>
+                <option value="سکردو">سکردو (Skardu)</option>
+                <option value="ہنزہ">ہنزہ (Hunza)</option>
+                <option value="غذر">غذر (Ghizer)</option>
+            </select>
+
+            <label id="lblDate">روانگی کی تاریخ:</label>
+            <input type="date" id="tourDate">
+
+            <label id="lblMembers">مسافروں کی تعداد:</label>
+            <select id="membersCount">
+                <option value="1-2">1-2 افراد</option>
+                <option value="3-5">3-5 افراد</option>
+                <option value="6+">6 یا زیادہ افراد</option>
+            </select>
+
+            <button class="action-btn" onclick="sendQuoteRequest()" id="quoteBtnSubmit">درخواست جمع کریں</button>
+        </div>
+
+        <!-- Destination Post -->
+        <div class="glass-card">
+            <div class="dest-card">
+                <img src="https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=600" alt="Astore Valley">
+                <div class="dest-info">
+                    <h3 id="cardTitle">وادی استور (Astore Valley)</h3>
+                    <p id="cardDesc">راما جھیل اور دیوسائی کے خوبصورت راستوں کا گڑھ۔ نیلے پانیوں اور سرسبز میدانوں کی جنت۔</p>
+                </div>
             </div>
         </div>
 
+        <!-- Live Feedback System -->
+        <div class="glass-card" id="reviews-section">
+            <h2 id="revTitle" style="font-size: 1.1rem; margin-bottom: 10px; color: var(--accent-color);">سیاحوں کی رائے (Live)</h2>
+            <input type="text" id="rName" placeholder="آپ کا نام">
+            <textarea id="rMsg" rows="2" placeholder="اپنا سفری تجربہ لکھیں..."></textarea>
+            <button class="action-btn" style="background: #10b981;" onclick="postReview()" id="revBtn">پوسٹ کریں</button>
+
+            <div id="commentsBox" style="margin-top: 15px;"></div>
+        </div>
     </div>
 
-    <!-- App Bottom Dock Navigation -->
-    <div class="bottom-nav">
-        <a href="#home-view" class="nav-tab active" onclick="setActiveNav(this)">
-            <span class="tab-icon">🏠</span><span>ہوم</span>
-        </a>
-        <a href="#quote-view" class="nav-tab" onclick="setActiveNav(this)">
-            <span class="tab-icon">📝</span><span>کوٹیشن</span>
-        </a>
-        
-        <!-- Center Floating Call Action -->
-        <a href="https://wa.me/923332637235" target="_blank" class="whatsapp-float-btn">💬</a>
-
-        <a href="#reviews-view" class="nav-tab" onclick="setActiveNav(this)">
-            <span class="tab-icon">⭐</span><span>ریویوز</span>
-        </a>
-        <a href="#info-view" class="nav-tab" onclick="setActiveNav(this)">
-            <span class="tab-icon">ℹ️</span><span>معلومات</span>
-        </a>
+    <!-- SECRET ADMIN SYSTEM MODAL PANEL -->
+    <div class="admin-modal" id="secretAdminPanel">
+        <div class="admin-header">
+            <h2 style="color:var(--accent-color);">🔐 سیکیور ایڈمن پینل</h2>
+            <button onclick="closeAdminPanel()" style="background:crimson; color:white; border:none; padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer;">بند کریں</button>
+        </div>
+        <h4 style="margin-bottom:15px; color:#10b981;">📋 کسٹمرز کی تمام درخواستیں (Everything Details):</h4>
+        <div id="adminDataContainer">
+            <p style="color:var(--text-sub);">ڈیٹا لوڈ ہو رہا ہے...</p>
+        </div>
     </div>
 
-    <!-- Firebase System & App Automation Scripts -->
+    <!-- Bottom Dock -->
+    <div class="bottom-dock">
+        <a href="#" class="dock-tab active"><span class="dock-icon">🏠</span><span id="tabHome">ہوم</span></a>
+        <a href="#quote-section" class="dock-tab"><span class="dock-icon">📅</span><span id="tabPlan">پلانر</span></a>
+        <a href="https://wa.me/923332637235" target="_blank" class="float-wa">💬</a>
+        <a href="#reviews-section" class="dock-tab"><span class="dock-icon">⭐</span><span id="tabRev">رائے</span></a>
+    </div>
+
     <script>
         // فائر بیس کنفیگریشن
         const firebaseConfig = {
           apiKey: "AIzaSyBiti-Ih5nxvRQ8Xt9YImiN1X3RnPoXoTI",
           authDomain: "gilgit-79048.firebaseapp.com",
           databaseURL: "https://gilgit-79048-default-rtdb.firebaseio.com",
-          projectId: "gitgit-79048",
+          projectId: "gilgit-79048",
           storageBucket: "gilgit-79048.firebasestorage.app",
           messagingSenderId: "784852692962",
           appId: "1:784852692962:web:eab87b313e024ebf7953bb"
         };
 
-        // فائر بیس کو انیشیلائز کریں
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const database = firebase.database();
 
-        let currentLoggedInUser = null;
+        let currentLang = "ur";
+        let currentUserName = "انجان کسٹمر";
+        let tapCount = 0;
+        let tapTimeout;
 
-        // 1. پرو لوڈر اینیمیشن لاجک
-        window.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                const loader = document.getElementById('mainLoader');
-                loader.style.opacity = '0';
-                setTimeout(() => loader.style.visibility = 'hidden', 500);
-            }, 1200);
-        });
+        const dictionary = {
+            ur: {
+                dir: "rtl", langBtn: "English", navTitle: "🏔️ Discover GB",
+                heroTitle: "جی بی ٹورسٹ پورٹل", heroSub: "خوبصورت وادیوں کی ماڈرن ڈیجیٹل گائیڈ",
+                loginTxt: "گوگل کے ساتھ ایک کلک میں سائن ان کریں:", quoteTitle: "مفت ٹور پلان حاصل کریں",
+                lblCity: "شہر کا انتخاب کریں:", lblDate: "روانگی کی تاریخ:", lblMembers: "مسافروں کی تعداد:",
+                quoteBtnSubmit: "درخواست جمع کریں", cardTitle: "وادی استور (Astore Valley)",
+                cardDesc: "راما جھیل اور دیوسائی کے خوبصورت راستوں کا گڑھ۔ نیلے پانیوں اور سرسبز میدانوں کی جنت۔",
+                revTitle: "سیاحوں کی رائے (Live)", rName: "آپ کا نام", rMsg: "اپنا سفری تجربہ لکھیں...",
+                revBtn: "پوسٹ کریں", tabHome: "ہوم", tabPlan: "پلانر", tabRev: "رائے"
+            },
+            en: {
+                dir: "ltr", langBtn: "اردو", navTitle: "🏔️ Discover GB",
+                heroTitle: "GB Tourist Portal", heroSub: "Modern Digital Guide to Celestial Valleys",
+                loginTxt: "Sign in with Google in just one click:", quoteTitle: "Get a Free Tour Quote",
+                lblCity: "Select Destination:", lblDate: "Departure Date:", lblMembers: "Number of Travelers:",
+                quoteBtnSubmit: "Submit Request", cardTitle: "Astore Valley",
+                cardDesc: "The hub of beautiful routes to Rama Lake and Deosai. A paradise of blue waters and lush green meadows.",
+                revTitle: "Visitor Reviews (Live)", rName: "Your Name", rMsg: "Share your travel experience...",
+                revBtn: "Post Review", tabHome: "Home", tabPlan: "Planner", tabRev: "Reviews"
+            }
+        };
 
-        // 2. گوگل لاگ ان اور سائن اپ سسٹم
-        function handleGoogleLogin() {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider).then((result) => {
-                currentLoggedInUser = result.user;
-                updateAuthUI(currentLoggedInUser);
-            }).catch((error) => {
-                alert("گوگل سائن ان ناکام ہوا: " + error.message);
-            });
+        function toggleLanguage() {
+            currentLang = currentLang === "ur" ? "en" : "ur";
+            const data = dictionary[currentLang];
+            document.getElementById("appHtml").setAttribute("dir", data.dir);
+            document.getElementById("langBtn").innerText = data.langBtn;
+            document.getElementById("navTitle").innerText = data.navTitle;
+            document.getElementById("heroTitle").innerText = data.heroTitle;
+            document.getElementById("heroSub").innerText = data.heroSub;
+            document.getElementById("loginTxt").innerText = data.loginTxt;
+            document.getElementById("quoteTitle").innerText = data.quoteTitle;
+            document.getElementById("lblCity").innerText = data.lblCity;
+            document.getElementById("lblDate").innerText = data.lblDate;
+            document.getElementById("lblMembers").innerText = data.lblMembers;
+            document.getElementById("quoteBtnSubmit").innerText = data.quoteBtnSubmit;
+            document.getElementById("cardTitle").innerText = data.cardTitle;
+            document.getElementById("cardDesc").innerText = data.cardDesc;
+            document.getElementById("revTitle").innerText = data.revTitle;
+            document.getElementById("rName").placeholder = data.rName;
+            document.getElementById("rMsg").placeholder = data.rMsg;
+            document.getElementById("revBtn").innerText = data.revBtn;
+            document.getElementById("tabHome").innerText = data.tabHome;
+            document.getElementById("tabPlan").innerText = data.tabPlan;
+            document.getElementById("tabRev").innerText = data.tabRev;
         }
 
-        function updateAuthUI(user) {
-            const container = document.getElementById('authContent');
-            if(user) {
-                document.getElementById('fbUserName').value = user.displayName;
-                document.getElementById('fbUserName').disabled = true;
-                container.innerHTML = `
-                    <div class="login-profile">
-                        <img src="${user.photoURL || 'https://via.placeholder.com/40'}" alt="User Profile">
-                        <div style="text-align:right;">
-                            <strong style="font-size:0.9rem; display:block;">${user.displayName}</strong>
-                            <span style="color:#10b981; font-size:0.75rem; font-weight:bold;">🟢 لاگ ان ہو چکے ہیں</span>
-                        </div>
-                    </div>
-                `;
+        // 🕵️‍♂️ SECRET 4-TAP LOGIC SYSTEM
+        function triggerSecretAdmin() {
+            tapCount++;
+            clearTimeout(tapTimeout);
+            
+            // اگر یوزر 2 سیکنڈ تک دوبارہ ٹیپ نہیں کرتا تو کاؤنٹ زیرو ہو جائے گا
+            tapTimeout = setTimeout(() => { tapCount = 0; }, 2000);
+
+            if (tapCount === 4) {
+                tapCount = 0; // ری سیٹ کریں
+                let secretKey = prompt(currentLang === "ur" ? "خفیہ سیکیورٹی کوڈ درج کریں:" : "Enter Secret Admin Key:");
+                
+                if (secretKey === "5426") {
+                    openAdminPanel();
+                } else if (secretKey !== null) {
+                    alert(currentLang === "ur" ? "غلط کوڈ! رسائی ممنوع ہے۔" : "Wrong Key! Access Denied.");
+                }
             }
         }
 
-        // 3. لائیو ریویوز لوڈنگ اور سینڈنگ (Firebase Realtime DB)
+        function openAdminPanel() {
+            document.getElementById("secretAdminPanel").style.display = "block";
+            loadAdminData();
+        }
+
+        function closeAdminPanel() {
+            document.getElementById("secretAdminPanel").style.display = "none";
+        }
+
+        // ایڈمن کے لیے کسٹمر کا سارا ڈیٹا لائیو فیچ کرنا
+        function loadAdminData() {
+            const container = document.getElementById("adminDataContainer");
+            container.innerHTML = "<p>فائر بیس سے کسٹمرز کا لائیو ڈیٹا نکل رہا ہے...</p>";
+
+            database.ref('quotes').on('value', (snapshot) => {
+                container.innerHTML = "";
+                let data = snapshot.val();
+                if(data) {
+                    Object.keys(data).reverse().forEach((key) => {
+                        let div = document.createElement('div');
+                        div.className = "data-row";
+                        let dateObj = new Date(data[key].time).toLocaleString('ur-PK');
+                        div.innerHTML = `
+                            <strong>👤 کسٹمر کا نام:</strong> ${data[key].user || "انجان کسٹمر"}<br>
+                            <strong>🗺️ منزل (شہر):</strong> ${data[key].city}<br>
+                            <strong>📅 ٹور کی تاریخ:</strong> ${data[key].date}<br>
+                            <strong>👥 مسافروں کی تعداد:</strong> ${data[key].travelers}<br>
+                            <span style="font-size:0.75rem; color:var(--text-sub);">⏰ آرڈر ٹائم: ${dateObj}</span>
+                        `;
+                        container.appendChild(div);
+                    });
+                } else {
+                    container.innerHTML = "<p>فائر بیس پر فی الحال کوئی کوٹیشن موجود نہیں ہے۔</p>";
+                }
+            });
+        }
+
+        // گوگل لاگ ان
+        function googleAuth() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider).then((res) => {
+                currentUserName = res.user.displayName;
+                document.getElementById("rName").value = currentUserName;
+                document.getElementById("rName").disabled = true;
+                alert(currentLang === "ur" ? "لاگ ان کامیاب!" : "Login Successful!");
+            });
+        }
+
+        // کوٹیشن ڈیٹا بیس میں بھیجیں
+        function sendQuoteRequest() {
+            let city = document.getElementById("destCity").value;
+            let date = document.getElementById("tourDate").value;
+            let members = document.getElementById("membersCount").value;
+
+            if(!date) return alert(currentLang === "ur" ? "براہ کرم تاریخ منتخب کریں!" : "Please select a date!");
+
+            database.ref('quotes').push({
+                city: city, 
+                date: date, 
+                travelers: members, 
+                user: currentUserName,
+                time: Date.now()
+            }).then(() => {
+                alert(currentLang === "ur" ? "درخواست موصول ہو گئی۔ ہم جلد رابطہ کریں گے!" : "Request received. We will contact you soon!");
+            });
+        }
+
+        // لائیو کمنٹس فائر بیس سے سننا
         database.ref('reviews').on('value', (snapshot) => {
-            const box = document.getElementById('liveReviewsBox');
+            const box = document.getElementById("commentsBox");
             box.innerHTML = "";
             let data = snapshot.val();
             if(data) {
                 Object.keys(data).reverse().forEach((key) => {
                     let div = document.createElement('div');
-                    div.style.cssText = "background:#f8fafc; padding:10px; border-radius:8px; margin-bottom:8px; font-size:0.85rem; border-right:3px solid #10b981;";
-                    div.innerHTML = `<strong>${data[key].username}:</strong> <p style="color:#475569; margin-top:2px;">${data[key].message}</p>`;
+                    div.className = "review-item";
+                    div.innerHTML = `<strong>${data[key].username}</strong>: <p style="color:var(--text-sub); margin-top:4px;">${data[key].message}</p>`;
                     box.appendChild(div);
                 });
-            } else {
-                box.innerHTML = `<p style="text-align:center; color:#64748b; font-size:0.8rem;">کوئی ریویو موجود نہیں ہے۔</p>`;
             }
         });
 
-        function sendFirebaseReview() {
-            let name = document.getElementById('fbUserName').value;
-            let msg = document.getElementById('fbUserMsg').value;
-            if(!name.trim() || !msg.trim()) { return alert("براہ کرم نام اور کمنٹ درج کریں!"); }
+        function postReview() {
+            let name = document.getElementById("rName").value;
+            let msg = document.getElementById("rMsg").value;
+            if(!name.trim() || !msg.trim()) return alert("Fill fields!");
 
             database.ref('reviews').push({
-                username: name,
-                message: msg,
-                timestamp: Date.now()
-            }).then(() => {
-                document.getElementById('fbUserMsg').value = "";
-            });
-        }
-
-        // 4. فری کوٹیشن فارم ڈیٹا ہینڈلر
-        function submitQuoteRequest() {
-            let city = document.getElementById('tourCity').value;
-            let vehicle = document.getElementById('vehicleType').value;
-            let notes = document.getElementById('quoteNotes').value;
-
-            if(!city) { return alert("براہ کرم کسی شہر کا انتخاب کریں!"); }
-
-            // ڈیٹا بیس میں کوٹیشن کی تفصیلات محفوظ کرنا
-            database.ref('quotes').push({
-                selectedCity: city,
-                serviceRequested: vehicle,
-                additionalNotes: notes,
-                user: currentLoggedInUser ? currentLoggedInUser.displayName : "انجان کسٹمر",
-                time: Date.now()
-            }).then(() => {
-                alert(`شکریہ! آپ کی ${city} کے لیے کوٹیشن کی درخواست موصول ہو گئی ہے۔ ہم جلد آپ سے واٹس ایپ پر رابطہ کریں گے۔`);
-                document.getElementById('quoteNotes').value = "";
-            });
-        }
-
-        // 5. ان-ایپ سب پیجز لوڈنگ سسٹم (Professional Tab Switcher)
-        function switchTab(type) {
-            const body = document.getElementById('tabContentBody');
-            const inlineLoader = document.getElementById('inlineLoader');
-            const btnComp = document.getElementById('btnCompany');
-            const btnPriv = document.getElementById('btnPrivacy');
-
-            body.style.display = 'none';
-            inlineLoader.style.display = 'block';
-
-            if(type === 'company') {
-                btnComp.classList.add('active');
-                btnPriv.classList.remove('active');
-            } else {
-                btnPriv.classList.add('active');
-                btnComp.classList.remove('active');
-            }
-
-            setTimeout(() => {
-                inlineLoader.style.display = 'none';
-                body.style.display = 'block';
-                if(type === 'company') {
-                    body.innerHTML = "Discover Gilgit-Baltistan ایک رجسٹرڈ مقامی ٹریول گائیڈ نیٹ ورک ہے جو سیاحوں کو محفوظ اور سستی سفری سہولیات فراہم کرتا ہے۔";
-                } else {
-                    body.innerHTML = "پرائیویسی پالیسی: ہم آپ کی فراہم کردہ معلومات (جیسے نام یا کوٹیشن کی تفصیلات) کو صرف ٹور مینیجمنٹ کے لیے استعمال کرتے ہیں اور اسے کسی تیسری پارٹی سے شیئر نہیں کیا جاتا۔";
-                }
-            }, 600); // 600ms کا کلاسی ان-ایپ لوڈنگ ویٹ فیل
-        }
-
-        // نیویگیشن ٹیب چینجر لاجک
-        function setActiveNav(element) {
-            let tabs = document.getElementsByClassName('nav-tab');
-            for(let i=0; i<tabs.length; i++) { tabs[i].classList.remove('active'); }
-            element.classList.add('active');
+                username: name, message: msg, timestamp: Date.now()
+            }).then(() => { document.getElementById("rMsg").value = ""; });
         }
     </script>
 </body>
