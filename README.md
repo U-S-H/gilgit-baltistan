@@ -1,115 +1,69 @@
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prime Solutions | GB Elite Portal</title>
+    <title>Prime Solutions | Professional Web Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .hero-anim { animation: fadeIn 2s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .glass-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); transition: 0.3s; }
+        .glass-card:hover { transform: translateY(-10px); border-color: #06b6d4; }
+        .hero-gradient { background: radial-gradient(circle at center, #0e7490 0%, #000 70%); }
     </style>
 </head>
-<body class="bg-black text-white font-sans">
+<body class="bg-black text-white font-sans selection:bg-cyan-500">
 
-    <nav class="flex justify-between items-center p-6 glass sticky top-0 z-50">
-        <h1 class="text-2xl font-bold text-cyan-400 cursor-pointer" onclick="openAdmin()">PRIME SOLUTIONS</h1>
-        <div class="flex gap-4 items-center">
-            <button onclick="toggleUserDashboard()" class="text-xs bg-gray-800 px-4 py-2 rounded-full">Dashboard</button>
-            <a href="#booking" class="bg-cyan-600 px-4 py-2 rounded-full text-sm font-bold">Book Now</a>
+    <!-- Navigation -->
+    <nav class="flex justify-between items-center p-6 max-w-7xl mx-auto">
+        <h1 class="text-2xl font-bold tracking-tighter text-cyan-400">PRIME<span class="text-white">SOLUTIONS</span></h1>
+        <div class="hidden md:flex space-x-8 font-medium text-sm uppercase tracking-widest">
+            <a href="#" class="hover:text-cyan-400">Home</a>
+            <a href="#services" class="hover:text-cyan-400">Services</a>
+            <a href="#contact" class="hover:text-cyan-400">Contact</a>
         </div>
     </nav>
 
-    <section id="userDashboard" class="hidden p-6 glass m-4 rounded-xl">
-        <h2 class="text-xl mb-4 text-cyan-400">My Trips</h2>
-        <div id="userBookingStatus" class="text-sm">No active requests.</div>
-    </section>
-
-    <header class="h-[70vh] flex flex-col justify-center items-center text-center hero-anim bg-cover bg-center" style="background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1544735716-39212c46f63f?auto=format&fit=crop&w=1920&q=80');">
-        <h1 class="text-5xl md:text-7xl font-black mb-4">Discover The North</h1>
-        <p class="text-gray-400 text-lg">Premium guided tours for 20+ breathtaking destinations.</p>
+    <!-- Hero Section -->
+    <header class="hero-gradient min-h-[70vh] flex flex-col justify-center items-center text-center p-6">
+        <h2 class="text-5xl md:text-7xl font-black mb-6 leading-tight">Elevate Your Digital<br><span class="text-cyan-500">Presence.</span></h2>
+        <p class="text-gray-400 mb-8 max-w-lg">Custom web development, design, and digital solutions tailored for your business success.</p>
+        <div class="flex gap-4">
+            <a href="#contact" class="bg-white text-black px-8 py-3 rounded-full font-bold hover:bg-cyan-400 transition">Get Started</a>
+        </div>
     </header>
 
-    <section id="destinations" class="p-10 max-w-7xl mx-auto">
-        <h2 class="text-3xl font-bold mb-8 text-center">Featured Destinations</h2>
-        <div id="cityGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6"></div>
+    <!-- Services Section -->
+    <section id="services" class="p-10 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="glass-card p-10 rounded-2xl">
+                <h3 class="text-2xl font-bold mb-4">Web Development</h3>
+                <p class="text-gray-400">High-performance websites built with modern tech stacks.</p>
+            </div>
+            <div class="glass-card p-10 rounded-2xl">
+                <h3 class="text-2xl font-bold mb-4">UI/UX Design</h3>
+                <p class="text-gray-400">Stunning interfaces focused on user experience and conversion.</p>
+            </div>
+            <div class="glass-card p-10 rounded-2xl">
+                <h3 class="text-2xl font-bold mb-4">Cloud Integration</h3>
+                <p class="text-gray-400">Secure, scalable, and reliable cloud solutions with Firebase.</p>
+            </div>
+        </div>
     </section>
 
-    <section id="booking" class="p-10 max-w-lg mx-auto glass rounded-3xl mb-20">
-        <h2 class="text-2xl mb-6 font-bold">Secure Your Trip</h2>
-        <input type="text" id="name" placeholder="Full Name" class="w-full p-4 mb-4 bg-black border border-gray-700 rounded-xl">
-        <select id="city" class="w-full p-4 mb-4 bg-black border border-gray-700 rounded-xl"></select>
-        <button onclick="addLead()" class="w-full bg-cyan-600 py-4 rounded-xl font-bold">Confirm Booking</button>
-    </section>
-
-    <section id="adminPanel" class="hidden p-6 glass m-4 rounded-xl border border-cyan-500">
-        <h2 class="text-2xl mb-4 text-cyan-400">Admin Panel</h2>
-        <div id="leadsList" class="space-y-2"></div>
+    <!-- Contact / Booking Section -->
+    <section id="contact" class="p-10 max-w-4xl mx-auto text-center my-20">
+        <h2 class="text-4xl font-bold mb-6">Let's Build Something Great</h2>
+        <div class="glass-card p-8 rounded-3xl">
+            <input type="text" id="name" placeholder="Full Name" class="w-full bg-transparent border-b border-gray-700 p-4 mb-4 focus:outline-none focus:border-cyan-500">
+            <textarea id="msg" placeholder="Your Project Idea" class="w-full bg-transparent border-b border-gray-700 p-4 mb-6 focus:outline-none focus:border-cyan-500"></textarea>
+            <button onclick="sendToWhatsApp()" class="w-full bg-cyan-600 py-4 rounded-full font-bold">Send Message</button>
+        </div>
     </section>
 
     <script>
-        lucide.createIcons();
-        const cities = ["Hunza", "Skardu", "Astore", "Ghizer", "Nagar", "Shigar", "Kharmang", "Ghanche", "Diamer", "Gilgit", "Yasin", "Ishkoman", "Phander", "Rama Lake", "Deosai", "Hushe", "Khaplu", "Gahkuch", "Chilas", "Darel"];
-        
-        // Populate Select and Grid
-        const grid = document.getElementById('cityGrid');
-        const citySelect = document.getElementById('city');
-        cities.forEach(city => {
-            citySelect.innerHTML += `<option value="${city}">${city}</option>`;
-            grid.innerHTML += `
-                <div class="glass rounded-xl p-4 hover:border-cyan-500 transition">
-                    <img src="https://source.unsplash.com/400x300/?${city},mountain,tourism" class="rounded-lg mb-4 h-40 w-full object-cover">
-                    <h3 class="font-bold text-cyan-400">${city}</h3>
-                </div>`;
-        });
-
-        let leads = JSON.parse(localStorage.getItem('leads')) || [];
-
-        function addLead() {
+        function sendToWhatsApp() {
             const name = document.getElementById('name').value;
-            const city = document.getElementById('city').value;
-            leads.push({ id: Date.now(), name, city, status: 'Pending' });
-            localStorage.setItem('leads', JSON.stringify(leads));
-            alert("Booking request submitted, sweetie!");
-            updateUserDashboard();
-        }
-
-        function toggleUserDashboard() { document.getElementById('userDashboard').classList.toggle('hidden'); }
-
-        function updateUserDashboard() {
-            document.getElementById('userBookingStatus').innerHTML = leads.map(l => `<p class="border-b p-2 border-gray-800">${l.city}: <span class="text-yellow-500">${l.status}</span></p>`).join('');
-        }
-
-        function openAdmin() {
-            if(prompt("Enter Admin Key:") === "5426") {
-                document.getElementById('adminPanel').classList.remove('hidden');
-                renderAdminLeads();
-            }
-        }
-
-        function renderAdminLeads() {
-            document.getElementById('leadsList').innerHTML = leads.map(l => `
-                <div class="flex justify-between p-2 border-b border-gray-800 text-sm">
-                    <span>${l.name} - ${l.city} (${l.status})</span>
-                    <div class="flex gap-2">
-                        <button onclick="updateLead(${l.id}, 'Approved')" class="bg-green-800 px-2 rounded">✓</button>
-                        <button onclick="deleteLead(${l.id})" class="bg-red-800 px-2 rounded">✕</button>
-                    </div>
-                </div>`).join('');
-        }
-
-        function updateLead(id, status) {
-            leads = leads.map(l => l.id === id ? {...l, status} : l);
-            localStorage.setItem('leads', JSON.stringify(leads));
-            renderAdminLeads();
-            updateUserDashboard();
-        }
-
-        function deleteLead(id) {
-            leads = leads.filter(l => l.id !== id);
-            localStorage.setItem('leads', JSON.stringify(leads));
-            renderAdminLeads();
+            const msg = document.getElementById('msg').value;
+            window.open(`https://wa.me/923000000000?text=Hi, I am ${name}. ${msg}`);
         }
     </script>
 </body>
