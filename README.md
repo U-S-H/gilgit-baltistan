@@ -309,7 +309,7 @@
             </div>
             <div class="flex gap-6 text-lg">
                 <a href="https://wa.me/923332637235" target="_blank" class="hover:text-emerald-500 transition" title="WhatsApp Communication Gateway"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://facebook.com/DiscoverGilgitBaltistan" target="_blank" class="hover:text-blue-500 transition" title="Facebook Official Community Page Hub"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.facebook.com/profile.php?id=61590624220027&mibextid=ZbWKwL" target="_blank" class="hover:text-blue-500 transition" title="Facebook Official Community Page Hub"><i class="fab fa-facebook-f"></i></a>
                 <a href="#home" class="hover:text-white transition" title="Top Return"><i class="fas fa-arrow-up"></i></a>
             </div>
         </div>
